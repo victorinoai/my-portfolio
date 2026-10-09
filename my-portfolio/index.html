@@ -6,7 +6,6 @@
   <title>Reb Howard Victorino — AI-Powered Product Video for E-Commerce</title>
   <meta name="description" content="I create product-focused video ads for e-commerce brands using AI-powered production, from concept through final edit." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
-  <!-- OG / Social -->
   <meta property="og:title" content="Reb Howard Victorino — AI-Powered Product Video" />
   <meta property="og:description" content="Product-focused video ads for e-commerce brands using AI-powered production, from concept through final edit." />
   <meta property="og:image" content="https://victorino-ai.vercel.app/images/website-pic-1200x600-full.png" />
@@ -16,34 +15,25 @@
   <meta name="twitter:title" content="Reb Howard Victorino — AI-Powered Product Video" />
   <meta name="twitter:description" content="Product-focused video ads for e-commerce brands using AI-powered production, from concept through final edit." />
   <meta name="twitter:image" content="images/og-image.jpg" />
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 
   <style>
-    /* ============================================================
-       TOKENS
-    ============================================================ */
     :root {
-      --black:      #0A0604;
-      --burgundy:   #1A0800;
-      --orange:     #E8450A;
-      --burnt:      #C23B0A;
-      --white:      #F5F0EB;
-      --gray:       #8A7A72;
-      --border:     rgba(232,69,10,0.15);
+      --black: #0A0604;
+      --burgundy: #1A0800;
+      --orange: #E8450A;
+      --burnt: #C23B0A;
+      --white: #F5F0EB;
+      --gray: #8A7A72;
+      --border: rgba(232,69,10,0.15);
       --ff-display: 'Bebas Neue', sans-serif;
-      --ff-body:    'DM Sans', sans-serif;
+      --ff-body: 'DM Sans', sans-serif;
     }
 
-    /* ============================================================
-       RESET & BASE
-    ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       background-color: var(--black);
       color: var(--white);
@@ -53,18 +43,12 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
-
     img { display: block; max-width: 100%; height: auto; }
-
     a { color: inherit; text-decoration: none; }
-
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
 
-    /* ============================================================
-       NAVIGATION
-    ============================================================ */
     .nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -76,14 +60,12 @@
       background: linear-gradient(to bottom, rgba(10,6,4,0.85) 0%, transparent 100%);
       backdrop-filter: blur(0px);
     }
-
     .nav-logo {
       font-family: var(--ff-display);
       font-size: 1.25rem;
       letter-spacing: 0.05em;
       color: var(--white);
     }
-
     .nav-cta {
       display: inline-flex;
       align-items: center;
@@ -99,13 +81,9 @@
       cursor: pointer;
       transition: background 0.2s ease;
     }
-
     .nav-cta:hover { background: var(--burnt); }
     .nav-cta:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
 
-    /* ============================================================
-       HERO
-    ============================================================ */
     .hero {
       position: relative;
       width: 100%;
@@ -114,8 +92,6 @@
       align-items: flex-end;
       overflow: hidden;
     }
-
-    /* Portrait — full bleed background */
     .hero-portrait {
       position: absolute;
       inset: 0;
@@ -125,8 +101,6 @@
       object-position: center top;
       z-index: 0;
     }
-
-    /* CSS placeholder — shown when hero-portrait.jpg is missing */
     .hero-portrait-placeholder {
       position: absolute;
       inset: 0;
@@ -142,28 +116,21 @@
       color: rgba(245,240,235,0.3);
       letter-spacing: 0.1em;
     }
-
-    /* Layered gradients — atmosphere + text legibility */
     .hero-overlay {
       position: absolute;
       inset: 0;
       z-index: 1;
       background:
-        /* Bottom scrim for text */
-        linear-gradient(to top,   rgba(10,6,4,0.96) 0%, rgba(10,6,4,0.6) 35%, transparent 60%),
-        /* Left text zone */
+        linear-gradient(to top, rgba(10,6,4,0.96) 0%, rgba(10,6,4,0.6) 35%, transparent 60%),
         linear-gradient(to right, rgba(10,6,4,0.75) 0%, transparent 55%),
-        /* Cinematic colour grade */
         linear-gradient(160deg, rgba(26,8,0,0.3) 0%, rgba(232,69,10,0.08) 60%, transparent 100%);
     }
-
     .hero-content {
       position: relative;
       z-index: 2;
       width: 100%;
       padding: 2rem 2rem 3.5rem;
     }
-
     .hero-label {
       font-family: var(--ff-body);
       font-size: 0.8rem;
@@ -174,7 +141,6 @@
       margin-bottom: 0.75rem;
       display: block;
     }
-
     .hero-headline {
       font-family: var(--ff-display);
       font-size: clamp(3rem, 10vw, 7.5rem);
@@ -184,7 +150,6 @@
       max-width: 14ch;
       margin-bottom: 1.25rem;
     }
-
     .hero-sub {
       font-size: clamp(0.9rem, 1.8vw, 1.05rem);
       font-weight: 300;
@@ -193,7 +158,6 @@
       margin-bottom: 2rem;
       line-height: 1.6;
     }
-
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -209,13 +173,9 @@
       cursor: pointer;
       transition: background 0.2s ease, transform 0.15s ease;
     }
-
     .btn-primary:hover { background: var(--burnt); transform: translateY(-1px); }
     .btn-primary:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
 
-    /* ============================================================
-       PROOF STRIP
-    ============================================================ */
     .proof {
       background: var(--burgundy);
       border-top: 1px solid var(--border);
@@ -223,7 +183,6 @@
       padding: 1.25rem 2rem;
       text-align: center;
     }
-
     .proof p {
       font-size: 0.85rem;
       font-weight: 300;
@@ -232,15 +191,11 @@
       text-transform: uppercase;
     }
 
-    /* ============================================================
-       SECTION SHARED
-    ============================================================ */
     .section {
       padding: 5rem 2rem;
       max-width: 72rem;
       margin: 0 auto;
     }
-
     .section-label {
       font-family: var(--ff-body);
       font-size: 0.75rem;
@@ -251,7 +206,6 @@
       margin-bottom: 2.5rem;
       display: block;
     }
-
     .section-heading {
       font-family: var(--ff-display);
       font-size: clamp(2.5rem, 6vw, 4.5rem);
@@ -261,9 +215,6 @@
       margin-bottom: 3rem;
     }
 
-    /* ============================================================
-       SERVICES
-    ============================================================ */
     .services-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -271,15 +222,12 @@
       background: var(--border);
       border: 1px solid var(--border);
     }
-
     .service-card {
       background: var(--black);
       padding: 2.25rem 2rem;
       transition: background 0.2s ease;
     }
-
     .service-card:hover { background: var(--burgundy); }
-
     .service-num {
       font-family: var(--ff-display);
       font-size: 3.5rem;
@@ -289,7 +237,6 @@
       margin-bottom: 1rem;
       display: block;
     }
-
     .service-title {
       font-family: var(--ff-display);
       font-size: 1.75rem;
@@ -304,34 +251,26 @@
       line-height: 1.7;
       max-width: 48ch;
     }
-
     @media (min-width: 640px) {
       .services-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
-    /* ============================================================
-       WORK
-    ============================================================ */
     .work-wrap {
       background: var(--burgundy);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
-
     .work-inner {
       display: grid;
       grid-template-columns: 1fr;
       gap: 2.5rem;
       align-items: start;
     }
-
     .work-inner + .work-inner {
       margin-top: 4.5rem;
       padding-top: 4.5rem;
       border-top: 1px solid var(--border);
     }
-
-    /* 9:16 Vimeo embed container */
     .work-video-wrap {
       position: relative;
       width: 100%;
@@ -342,7 +281,6 @@
       border: 1px solid var(--border);
       overflow: hidden;
     }
-
     .work-video {
       position: absolute;
       inset: 0;
@@ -350,9 +288,6 @@
       height: 100%;
       border: none;
     }
-
-    .work-meta { }
-
     .work-title {
       font-family: var(--ff-display);
       font-size: clamp(1.5rem, 4vw, 2.25rem);
@@ -361,11 +296,7 @@
       color: var(--white);
       margin-bottom: 2rem;
     }
-
-    .work-row {
-      margin-bottom: 1.5rem;
-    }
-
+    .work-row { margin-bottom: 1.5rem; }
     .work-row-label {
       font-size: 0.7rem;
       font-weight: 500;
@@ -375,7 +306,6 @@
       margin-bottom: 0.35rem;
       display: block;
     }
-
     .work-row p {
       font-size: 0.9rem;
       font-weight: 300;
@@ -383,14 +313,12 @@
       line-height: 1.65;
       max-width: 52ch;
     }
-
     .tools-list {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
       margin-top: 0.35rem;
     }
-
     .tool-tag {
       font-size: 0.75rem;
       font-weight: 400;
@@ -400,20 +328,15 @@
       padding: 0.3rem 0.75rem;
       border-radius: 2rem;
     }
-
     @media (min-width: 768px) {
       .work-inner { grid-template-columns: 1fr 1fr; gap: 4rem; }
     }
 
-    /* ============================================================
-       PROCESS
-    ============================================================ */
     .process-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 0;
     }
-
     .process-step {
       display: grid;
       grid-template-columns: 3.5rem 1fr;
@@ -422,18 +345,13 @@
       border-bottom: 1px solid var(--border);
       align-items: start;
     }
-
     .process-step:last-child { border-bottom: none; }
-
     .process-num {
       font-family: var(--ff-display);
       font-size: 2.25rem;
       line-height: 1;
       color: var(--orange);
     }
-
-    .process-text {}
-
     .process-step-title {
       font-family: var(--ff-display);
       font-size: 1.5rem;
@@ -441,7 +359,6 @@
       color: var(--white);
       margin-bottom: 0.4rem;
     }
-
     .process-step-desc {
       font-size: 0.875rem;
       font-weight: 300;
@@ -449,24 +366,18 @@
       line-height: 1.7;
       max-width: 52ch;
     }
-
     @media (min-width: 640px) {
       .process-grid { grid-template-columns: repeat(2, 1fr); gap: 0; }
       .process-step { border-right: 1px solid var(--border); }
       .process-step:nth-child(even) { border-right: none; padding-left: 2rem; }
       .process-step:nth-child(odd) { padding-right: 2rem; }
-      .process-step:nth-child(3),
-      .process-step:nth-child(4) { border-bottom: none; }
+      .process-step:nth-child(3), .process-step:nth-child(4) { border-bottom: none; }
     }
 
-    /* ============================================================
-       TRUST
-    ============================================================ */
     .trust-wrap {
       background: linear-gradient(135deg, var(--burgundy) 0%, var(--black) 100%);
       border-top: 1px solid var(--border);
     }
-
     .trust-inner {
       max-width: 72rem;
       margin: 0 auto;
@@ -476,7 +387,6 @@
       gap: 2rem;
       align-items: center;
     }
-
     .trust-heading {
       font-family: var(--ff-display);
       font-size: clamp(2.5rem, 6vw, 4rem);
@@ -484,7 +394,6 @@
       letter-spacing: 0.02em;
       color: var(--white);
     }
-
     .trust-body {
       font-size: 0.95rem;
       font-weight: 300;
@@ -492,18 +401,11 @@
       line-height: 1.75;
       max-width: 48ch;
     }
-
     @media (min-width: 768px) {
       .trust-inner { grid-template-columns: 1fr 1fr; gap: 5rem; }
     }
 
-    /* ============================================================
-       CONTACT / CTA
-    ============================================================ */
-    .contact-wrap {
-      background: var(--orange);
-    }
-
+    .contact-wrap { background: var(--orange); }
     .contact-inner {
       max-width: 72rem;
       margin: 0 auto;
@@ -513,7 +415,6 @@
       gap: 2rem;
       align-items: center;
     }
-
     .contact-heading {
       font-family: var(--ff-display);
       font-size: clamp(2.5rem, 6vw, 4.5rem);
@@ -521,7 +422,6 @@
       letter-spacing: 0.02em;
       color: var(--white);
     }
-
     .contact-sub {
       font-size: 0.95rem;
       font-weight: 300;
@@ -530,7 +430,6 @@
       line-height: 1.65;
       margin-bottom: 1.5rem;
     }
-
     .btn-dark {
       display: inline-flex;
       align-items: center;
@@ -546,17 +445,12 @@
       cursor: pointer;
       transition: background 0.2s ease;
     }
-
     .btn-dark:hover { background: var(--burgundy); }
     .btn-dark:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
-
     @media (min-width: 768px) {
       .contact-inner { grid-template-columns: 1fr 1fr; gap: 4rem; }
     }
 
-    /* ============================================================
-       FOOTER
-    ============================================================ */
     .footer {
       background: var(--black);
       border-top: 1px solid var(--border);
@@ -567,19 +461,13 @@
       align-items: center;
       text-align: center;
     }
-
     .footer-name {
       font-family: var(--ff-display);
       font-size: 1rem;
       letter-spacing: 0.1em;
       color: var(--white);
     }
-
-    .footer-copy {
-      font-size: 0.75rem;
-      color: var(--gray);
-    }
-
+    .footer-copy { font-size: 0.75rem; color: var(--gray); }
     .footer-socials {
       display: flex;
       flex-wrap: wrap;
@@ -587,147 +475,82 @@
       gap: 1rem;
       margin-top: 0.25rem;
     }
-
     .footer-socials a {
       font-size: 0.75rem;
       color: var(--gray);
       transition: color 0.2s ease;
     }
-
     .footer-socials a:hover { color: var(--orange); }
     .footer-socials a:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 2px; }
-
-    /* ============================================================
-       UTILITY
-    ============================================================ */
-    .visually-hidden {
-      position: absolute;
-      width: 1px; height: 1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-    }
-
   </style>
 </head>
-
 <body>
-
-  <!-- NAV -->
   <nav class="nav" aria-label="Main navigation">
     <span class="nav-logo">Reb Howard Victorino</span>
-    <a href="mailto:victorino.rhv@gmail.com" class="nav-cta" aria-label="Send an email to Reb Howard Victorino">
-      Get in touch
-    </a>
+    <a href="mailto:victorino.rhv@gmail.com" class="nav-cta">Get in touch</a>
   </nav>
 
-  <!-- HERO -->
   <section class="hero" aria-label="Hero">
-
-    <!-- Real portrait — drop hero-portrait.jpg into images/ and this appears -->
-    <img
-      class="hero-portrait"
-      src="images/hero-landscape.png"
-      alt="Reb Howard Victorino, AI-powered video producer"
-      width="1080"
-      height="1920"
-      loading="eager"
-      onerror="this.style.display='none'; document.querySelector('.hero-portrait-placeholder').style.display='flex';"
-    />
-
-    <!-- Fallback placeholder — hidden once the real image loads -->
-    <div class="hero-portrait-placeholder" style="display:none;" aria-hidden="true">
-      <span>images/hero-portrait.jpg</span>
-    </div>
-
-    <!-- Cinematic overlay -->
+    <img class="hero-portrait" src="images/hero-landscape.png" alt="Reb Howard Victorino, AI-powered video producer" width="1080" height="1920" loading="eager" onerror="this.style.display='none'; document.querySelector('.hero-portrait-placeholder').style.display='flex';" />
+    <div class="hero-portrait-placeholder" style="display:none;" aria-hidden="true"><span>images/hero-portrait.jpg</span></div>
     <div class="hero-overlay" aria-hidden="true"></div>
-
-    <!-- Content -->
     <div class="hero-content">
       <span class="hero-label">AI-Powered Video Production</span>
       <h1 class="hero-headline">Need Product Videos Without a Full Production Setup?</h1>
       <p class="hero-sub">I create product-focused video ads for e-commerce brands using AI-powered production, from concept through final edit.</p>
       <a href="mailto:victorino.rhv@gmail.com" class="btn-primary">Send an Email</a>
     </div>
-
   </section>
 
-  <!-- PROOF STRIP -->
-  <div class="proof" role="note">
-    <p>Full video production from concept to final edit, powered by AI tools.</p>
-  </div>
+  <div class="proof" role="note"><p>Full video production from concept to final edit, powered by AI tools.</p></div>
 
-  <!-- SERVICES -->
   <section aria-labelledby="services-heading">
     <div class="section">
       <span class="section-label">What I do</span>
       <h2 class="section-heading" id="services-heading">Services</h2>
       <div class="services-grid">
-
         <div class="service-card">
-          <span class="service-num" aria-hidden="true">01</span>
+          <span class="service-num">01</span>
           <h3 class="service-title">Product Video Ads</h3>
           <p class="service-desc">Product-focused video ads built to present your product clearly and give viewers a reason to consider it. I can create short-form or long-form ads based on your campaign needs.</p>
         </div>
-
         <div class="service-card">
-          <span class="service-num" aria-hidden="true">02</span>
+          <span class="service-num">02</span>
           <h3 class="service-title">Polished Video Content</h3>
           <p class="service-desc">AI-powered editing and post-production that turns your footage or generated assets into a finished video. You get a clean, edited video ready to publish.</p>
         </div>
-
         <div class="service-card">
-          <span class="service-num" aria-hidden="true">03</span>
+          <span class="service-num">03</span>
           <h3 class="service-title">AI-Driven Content</h3>
           <p class="service-desc">AI avatar, faceless, and other AI-powered video formats created for brands that need content without a traditional filming setup. You get a complete video from concept through final edit.</p>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- SELECTED WORK -->
   <section class="work-wrap" aria-labelledby="work-heading">
     <div class="section">
       <span class="section-label">Selected Work</span>
       <h2 class="section-heading" id="work-heading">Case Studies</h2>
+
       <div class="work-inner">
-
-        <!-- Vimeo embed — 9:16 vertical -->
         <div class="work-video-wrap">
-          <iframe
-            class="work-video"
-            src="https://player.vimeo.com/video/1232986808?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
-            width="1080"
-            height="1920"
-            frameborder="0"
-            title="PRIMALLY PURE UGC WITH WATERMARK"
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-            allowfullscreen
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-          ></iframe>
+          <iframe class="work-video" src="https://player.vimeo.com/video/1232986808?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" width="1080" height="1920" frameborder="0" title="UGC ADS - PRIMALLY PURE" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
-
         <div class="work-meta">
-          <h3 class="work-title">Primally Pure Almond + Vanilla Body Butter — UGC Ad</h3>
-
+          <h3 class="work-title">UGC ADS - PRIMALLY PURE</h3>
           <div class="work-row">
             <span class="work-row-label">Problem</span>
             <p>A skincare product needed a compelling product video in a UGC ad style.</p>
           </div>
-
           <div class="work-row">
             <span class="work-row-label">What I did</span>
             <p>Handled the full video production from concept through final edit, including product shots, UGC-style scenes, captions, and voiceover.</p>
           </div>
-
           <div class="work-row">
             <span class="work-row-label">Result</span>
             <p>Completed personal portfolio sample; no client performance data available.</p>
           </div>
-
           <div class="work-row">
             <span class="work-row-label">Tools</span>
             <div class="tools-list">
@@ -738,45 +561,26 @@
             </div>
           </div>
         </div>
-
       </div>
 
       <div class="work-inner">
-
-        <!-- Vimeo embed — 9:16 vertical -->
         <div class="work-video-wrap">
-          <iframe
-            class="work-video"
-            src="https://player.vimeo.com/video/1234398000?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
-            width="1080"
-            height="1920"
-            frameborder="0"
-            title="Murad authority and expert skincare ad"
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-            allowfullscreen
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-          ></iframe>
+          <iframe class="work-video" src="https://player.vimeo.com/video/1234398000?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" width="1080" height="1920" frameborder="0" title="AUTHORITY/EXPERT ADS - MURAD" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
-
         <div class="work-meta">
-          <h3 class="work-title">Murad Acne Treatment — Authority / Expert Ad</h3>
-
+          <h3 class="work-title">AUTHORITY/EXPERT ADS - MURAD</h3>
           <div class="work-row">
             <span class="work-row-label">Problem</span>
             <p>An acne-treatment product needed a more credible, education-led ad that could build trust around the skincare problem and solution instead of relying on a typical testimonial-style pitch.</p>
           </div>
-
           <div class="work-row">
             <span class="work-row-label">What I did</span>
             <p>Built the concept around an authority and expert angle, using a skincare-professional-style presentation, clear problem-and-solution framing, product-focused visuals, supporting B-roll, captions, and voiceover to make the message feel informed, trustworthy, and easy to follow.</p>
           </div>
-
           <div class="work-row">
             <span class="work-row-label">Result</span>
             <p>Completed personal portfolio sample demonstrating an expert-led skincare ad format designed to communicate product value through credibility and education; no client performance data available.</p>
           </div>
-
           <div class="work-row">
             <span class="work-row-label">Tools</span>
             <div class="tools-list">
@@ -787,55 +591,57 @@
             </div>
           </div>
         </div>
+      </div>
 
+      <div class="work-inner">
+        <div class="work-video-wrap">
+          <iframe class="work-video" src="https://player.vimeo.com/video/1234398020?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" width="1080" height="1920" frameborder="0" title="VSL - BIM CONSULT PHILIPPINES" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <div class="work-meta">
+          <h3 class="work-title">VSL - BIM CONSULT PHILIPPINES</h3>
+          <div class="work-row">
+            <span class="work-row-label">Project Type</span>
+            <p>Live client project.</p>
+          </div>
+          <div class="work-row">
+            <span class="work-row-label">Problem</span>
+            <p>BIM Consult Philippines needed a clear, professional VSL that could communicate how BIM helps make projects easier, faster, and more coordinated while presenting the company’s service in a way that is easy for prospective clients to understand.</p>
+          </div>
+          <div class="work-row">
+            <span class="work-row-label">What I did</span>
+            <p>Developed and produced the VSL from concept through final edit, structuring the message around project challenges, BIM-led workflow improvements, professional project visuals, voiceover, captions, and branded creative direction.</p>
+          </div>
+          <div class="work-row">
+            <span class="work-row-label">Result</span>
+            <p>Completed for BIM Consult Philippines as a live client project and delivered as a finished VSL for the company’s marketing use.</p>
+          </div>
+          <div class="work-row">
+            <span class="work-row-label">Tools</span>
+            <div class="tools-list">
+              <span class="tool-tag">Claude</span>
+              <span class="tool-tag">Flow by Google</span>
+              <span class="tool-tag">ElevenLabs</span>
+              <span class="tool-tag">CapCut</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- PROCESS -->
   <section aria-labelledby="process-heading">
     <div class="section">
       <span class="section-label">How it works</span>
       <h2 class="section-heading" id="process-heading">Process</h2>
       <div class="process-grid">
-
-        <div class="process-step">
-          <span class="process-num" aria-hidden="true">1</span>
-          <div class="process-text">
-            <h3 class="process-step-title">Share Your Vision</h3>
-            <p class="process-step-desc">You tell me about your product, goals, and the type of video you want.</p>
-          </div>
-        </div>
-
-        <div class="process-step">
-          <span class="process-num" aria-hidden="true">2</span>
-          <div class="process-text">
-            <h3 class="process-step-title">Plan the Video</h3>
-            <p class="process-step-desc">I turn your ideas into a script, storyboard, and production plan.</p>
-          </div>
-        </div>
-
-        <div class="process-step">
-          <span class="process-num" aria-hidden="true">3</span>
-          <div class="process-text">
-            <h3 class="process-step-title">Produce the Ad</h3>
-            <p class="process-step-desc">I create the video using AI-powered production and editing tools.</p>
-          </div>
-        </div>
-
-        <div class="process-step">
-          <span class="process-num" aria-hidden="true">4</span>
-          <div class="process-text">
-            <h3 class="process-step-title">Review & Deliver</h3>
-            <p class="process-step-desc">You review the finished video, I make the agreed revisions, and the final version is delivered.</p>
-          </div>
-        </div>
-
+        <div class="process-step"><span class="process-num">1</span><div><h3 class="process-step-title">Share Your Vision</h3><p class="process-step-desc">You tell me about your product, goals, and the type of video you want.</p></div></div>
+        <div class="process-step"><span class="process-num">2</span><div><h3 class="process-step-title">Plan the Video</h3><p class="process-step-desc">I turn your ideas into a script, storyboard, and production plan.</p></div></div>
+        <div class="process-step"><span class="process-num">3</span><div><h3 class="process-step-title">Produce the Ad</h3><p class="process-step-desc">I create the video using AI-powered production and editing tools.</p></div></div>
+        <div class="process-step"><span class="process-num">4</span><div><h3 class="process-step-title">Review & Deliver</h3><p class="process-step-desc">You review the finished video, I make the agreed revisions, and the final version is delivered.</p></div></div>
       </div>
     </div>
   </section>
 
-  <!-- TRUST -->
   <div class="trust-wrap">
     <div class="trust-inner">
       <h2 class="trust-heading">Built Around Your Product</h2>
@@ -843,7 +649,6 @@
     </div>
   </div>
 
-  <!-- CONTACT -->
   <section class="contact-wrap" aria-labelledby="contact-heading">
     <div class="contact-inner">
       <h2 class="contact-heading" id="contact-heading">Have a product that needs a video ad?</h2>
@@ -854,11 +659,10 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <span class="footer-name">Reb Howard Victorino</span>
     <p class="footer-copy">&copy; 2025 Reb Howard Victorino. All rights reserved.</p>
-    <div class="footer-socials" aria-label="Social media links">
+    <div class="footer-socials">
       <a href="https://www.facebook.com/reb.howard.victorino/" target="_blank" rel="noopener noreferrer">Facebook</a>
       <a href="https://www.instagram.com/igvictorino/" target="_blank" rel="noopener noreferrer">Instagram</a>
       <a href="https://www.tiktok.com/@thevctrno" target="_blank" rel="noopener noreferrer">TikTok</a>
@@ -867,12 +671,10 @@
   </footer>
 
   <script>
-    // Smooth nav background on scroll
     (function () {
       const nav = document.querySelector('.nav');
       if (!nav) return;
       let ticking = false;
-
       function updateNav() {
         if (window.scrollY > 60) {
           nav.style.background = 'rgba(10,6,4,0.95)';
@@ -887,7 +689,6 @@
         }
         ticking = false;
       }
-
       window.addEventListener('scroll', function () {
         if (!ticking) {
           requestAnimationFrame(updateNav);
@@ -896,6 +697,5 @@
       }, { passive: true });
     }());
   </script>
-
 </body>
 </html>
