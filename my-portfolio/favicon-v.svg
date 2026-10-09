@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6f747c"/>
+      <stop offset="0.22" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#a8adb5"/>
+      <stop offset="0.68" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#555a62"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#858b94"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="10" fill="#050505"/>
+  <ellipse cx="32" cy="32" rx="28" ry="15" fill="none" stroke="#cbd0d8" stroke-width="1.5" opacity=".42" transform="rotate(-13 32 32)"/>
+  <path d="M8 13 L27.5 52.5 Q31.5 59 35.5 52.5 L56 13 L44.5 17 L32 41 L20 17 Z" fill="url(#chrome)" stroke="#f7f8fa" stroke-width="1.15" stroke-linejoin="round"/>
+  <path d="M17 17 L32 47 L47 17 L41.5 19.5 L32 37.5 L22.5 19.5 Z" fill="#111318" opacity=".72"/>
+  <path d="M32 5 L34 20 L48 22 L34 24 L32 40 L30 24 L16 22 L30 20 Z" fill="url(#edge)" opacity=".96"/>
+  <circle cx="32" cy="22" r="2.2" fill="#ffffff"/>
+</svg>
