@@ -1,14 +1,14 @@
 {
   "name": "victorino-discord-bot",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "private": true,
   "description": "Discord automation and server provisioning for VICTORINO.",
-  "main": "src/index-v2.js",
+  "main": "src/index-v3.js",
   "type": "commonjs",
   "scripts": {
     "prestart": "node src/name-migrate.js && node src/footer-migrate.js",
-    "start": "node src/index-v2.js",
-    "check": "node --check src/name-migrate.js && node --check src/footer-migrate.js && node --check src/index-v2.js && node --check src/config.js"
+    "start": "node src/index-v3.js",
+    "check": "node --check src/name-migrate.js && node --check src/footer-migrate.js && node --check src/level-store.js && node --check src/index-v3.js && node --check src/config.js"
   },
   "engines": {
     "node": ">=20"
