@@ -15,7 +15,22 @@ const ROLE_NAMES = {
   trainee: '🌱 TRAINEE',
   client: '🤝 CLIENT',
   pending: '⏳ PENDING',
+  level1: '🌱 LEVEL 1 | ARRIVAL',
+  level5: '⚡ LEVEL 5 | ACTIVE',
+  level10: '🎯 LEVEL 10 | CONTRIBUTOR',
+  level20: '🏅 LEVEL 20 | CORE',
+  level35: '💠 LEVEL 35 | VETERAN',
+  level50: '👑 LEVEL 50 | ELITE',
 };
+
+const LEVEL_MILESTONES = [
+  { level: 1, roleKey: 'level1', label: 'ARRIVAL', emoji: '🌱' },
+  { level: 5, roleKey: 'level5', label: 'ACTIVE', emoji: '⚡' },
+  { level: 10, roleKey: 'level10', label: 'CONTRIBUTOR', emoji: '🎯' },
+  { level: 20, roleKey: 'level20', label: 'CORE', emoji: '🏅' },
+  { level: 35, roleKey: 'level35', label: 'VETERAN', emoji: '💠' },
+  { level: 50, roleKey: 'level50', label: 'ELITE', emoji: '👑' },
+];
 
 const roles = [
   {
@@ -65,6 +80,12 @@ const roles = [
   { key: 'trainee', name: ROLE_NAMES.trainee, permissions: [], hoist: false, mentionable: true },
   { key: 'client', name: ROLE_NAMES.client, permissions: [], hoist: false, mentionable: false },
   { key: 'pending', name: ROLE_NAMES.pending, permissions: [], hoist: false, mentionable: false },
+  { key: 'level1', name: ROLE_NAMES.level1, permissions: [], hoist: false, mentionable: false },
+  { key: 'level5', name: ROLE_NAMES.level5, permissions: [], hoist: false, mentionable: false },
+  { key: 'level10', name: ROLE_NAMES.level10, permissions: [], hoist: false, mentionable: false },
+  { key: 'level20', name: ROLE_NAMES.level20, permissions: [], hoist: false, mentionable: false },
+  { key: 'level35', name: ROLE_NAMES.level35, permissions: [], hoist: false, mentionable: false },
+  { key: 'level50', name: ROLE_NAMES.level50, permissions: [], hoist: false, mentionable: false },
 ];
 
 const categories = [
@@ -72,7 +93,7 @@ const categories = [
     name: '👋 00 | START HERE',
     access: 'everyone',
     channels: [
-      ['👋welcome', 'text', true, 'Welcome to VICTORINO. Start here.'],
+      ['👋welcome', 'text', true, 'VICTORINO arrival and landing page. Start here when you join.'],
       ['📜rules', 'text', true, 'Internal standards, confidentiality, and team rules.'],
       ['🧭onboarding', 'text', true, 'New member onboarding steps.'],
       ['🎭choose-role', 'text', true, 'Choose your primary production role.'],
@@ -147,6 +168,7 @@ const categories = [
     name: '✨ 07 | CULTURE',
     access: 'team',
     channels: [
+      ['📈level-ups', 'text', true, 'VICTORINO activity levels, milestone roles, and level-up announcements.'],
       ['🎞️showcase', 'text', false, 'Share finished work and strong creative references.'],
       ['✨inspiration', 'text', false, 'Ads, visuals, editing references, and creative inspiration.'],
       ['☕random', 'text', false, 'Off-topic team chat.'],
@@ -183,6 +205,7 @@ function channelType(type) {
 
 module.exports = {
   BRAND,
+  LEVEL_MILESTONES,
   ROLE_NAMES,
   roles,
   categories,
