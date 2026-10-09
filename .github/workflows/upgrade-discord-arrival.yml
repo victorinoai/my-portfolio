@@ -1,0 +1,201 @@
+name: Upgrade Discord Arrival Experience
+
+on:
+  push:
+    branches:
+      - victorino-discord-bot
+    paths:
+      - .github/workflows/upgrade-discord-arrival.yml
+
+permissions:
+  contents: write
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: victorino-discord-bot
+
+      - name: Patch VICTORINO Discord bot
+        shell: python
+        run: |
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path('victorino-discord-bot')
+
+          # 1) Rename the public landing/feed channel from welcome -> arrival.
+          config_path = root / 'src' / 'config.js'
+          config = config_path.read_text()
+          config = config.replace(
+              "['👋welcome', 'text', true, 'VICTORINO arrival and landing page. Start here when you join.']",
+              "['📌arrival', 'text', true, 'Personalized VICTORINO arrival cards for every new member.']",
+          )
+          config_path.write_text(config)
+
+          # 2) Teach the prestart migration to rename the existing channel in place.
+          migrate_path = root / 'src' / 'name-migrate.js'
+          migrate = migrate_path.read_text()
+          anchor = "  let changed = 0;\n\n"
+          legacy_patch = """  let changed = 0;\n\n  // Legacy channel rename: keep the existing channel and its history.\n  const legacyWelcome = findChannel(guild, 'welcome', ChannelType.GuildText);\n  const currentArrival = findChannel(guild, 'arrival', ChannelType.GuildText);\n  if (legacyWelcome && !currentArrival) {\n    await legacyWelcome.setName('📌arrival', 'VICTORINO arrival experience upgrade');\n    changed += 1;\n    await guild.channels.fetch();\n  }\n\n"""
+          if 'VICTORINO arrival experience upgrade' not in migrate:
+              migrate = migrate.replace(anchor, legacy_patch, 1)
+          migrate_path.write_text(migrate)
+
+          # 3) Create the next bot engine from the current v3 source.
+          src = (root / 'src' / 'index-v3.js').read_text()
+
+          if "require('./welcome-card')" not in src:
+              src = src.replace(
+                  "const levelStore = require('./level-store');",
+                  "const levelStore = require('./level-store');\nconst { buildWelcomeCard } = require('./welcome-card');",
+                  1,
+              )
+
+          # Static landing panel should live in arrival now.
+          src = src.replace("byName('welcome')", "byName('arrival')")
+
+          # Add an admin preview command so the founder can test the card instantly.
+          role_panel_command = """  new SlashCommandBuilder()\n    .setName('role-panel')\n    .setDescription('Repost the production role selection panel.')\n    .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),\n"""
+          preview_command = role_panel_command + """  new SlashCommandBuilder()\n    .setName('arrival-preview')\n    .setDescription('Post a preview of your VICTORINO arrival card.')\n    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),\n"""
+          if ".setName('arrival-preview')" not in src:
+              src = src.replace(role_panel_command, preview_command, 1)
+
+          # Replace the old text-only arrival message with the screenshot-style personalized card.
+          pattern = re.compile(
+              r"async function sendArrival\(member, stats\) \{.*?\n\}\n\nasync function announceLevelUp",
+              re.S,
+          )
+          replacement = r"""async function sendArrival(member, stats) {
+  const channel = findChannel(member.guild, 'arrival', ChannelType.GuildText)
+    || findChannel(member.guild, 'welcome', ChannelType.GuildText);
+  if (!channel) return;
+
+  const milestone = milestoneForLevel(stats.level);
+  const rules = findChannel(member.guild, 'rules', ChannelType.GuildText);
+  const onboarding = findChannel(member.guild, 'onboarding', ChannelType.GuildText);
+  const chooseRole = findChannel(member.guild, 'choose-role', ChannelType.GuildText);
+
+  const row = new ActionRowBuilder();
+  if (rules) {
+    row.addComponents(
+      new ButtonBuilder()
+        .setLabel('Read the rules')
+        .setEmoji('📌')
+        .setStyle(ButtonStyle.Link)
+        .setURL(channelUrl(member.guild, rules)),
+    );
+  }
+  if (onboarding) {
+    row.addComponents(
+      new ButtonBuilder()
+        .setLabel('Start onboarding')
+        .setEmoji('🧭')
+        .setStyle(ButtonStyle.Link)
+        .setURL(channelUrl(member.guild, onboarding)),
+    );
+  }
+  if (chooseRole) {
+    row.addComponents(
+      new ButtonBuilder()
+        .setLabel('Choose your role')
+        .setEmoji('🎭')
+        .setStyle(ButtonStyle.Link)
+        .setURL(channelUrl(member.guild, chooseRole)),
+    );
+  }
+
+  const embed = new EmbedBuilder()
+    .setTitle('Welcome to VICTORINO')
+    .setDescription(
+      `Welcome <@${member.id}> 👋\n\n` +
+      '**VICTORINO** is our internal AI creative agency workspace for production, training, collaboration, and client delivery.\n\n' +
+      '**What you’ll find here:** creative briefs, scripts, storyboards, AI generation, editing, quality control, team training, and live project spaces.',
+    )
+    .addFields(
+      {
+        name: 'Starting status',
+        value: `${milestone.emoji} **Level ${stats.level} — ${milestone.label}**`,
+        inline: true,
+      },
+      {
+        name: 'Next step',
+        value: 'Read the rules, complete onboarding, then choose your production role.',
+      },
+    );
+
+  const payload = {
+    content: `Welcome <@${member.id}> 👋`,
+    embeds: [embed],
+    components: row.components.length ? [row] : [],
+    allowedMentions: { users: [member.id] },
+  };
+
+  try {
+    const card = await buildWelcomeCard(
+      member,
+      `LEVEL ${stats.level} | ${milestone.label}`,
+    );
+    embed.setImage('attachment://victorino-welcome.png');
+    payload.files = [{ attachment: card, name: 'victorino-welcome.png' }];
+  } catch (error) {
+    console.error('welcome-card generation failed:', error);
+    embed.setThumbnail(member.user.displayAvatarURL({ size: 256 }));
+  }
+
+  await channel.send(payload).catch(error => console.error('arrival send failed:', error));
+}
+
+async function announceLevelUp"""
+          src, count = pattern.subn(replacement, src, count=1)
+          if count != 1:
+              raise RuntimeError('Could not replace sendArrival() block')
+
+          # Add slash command handling for the preview.
+          level_handler_anchor = """    if (interaction.commandName === 'level') {\n      await handleLevel(interaction);\n      return;\n    }\n"""
+          preview_handler = """    if (interaction.commandName === 'arrival-preview') {\n      await interaction.deferReply({ ephemeral: true });\n      const member = await interaction.guild.members.fetch(interaction.user.id);\n      const stats = levelStore.getUser(member.id, profileFor(member));\n      await sendArrival(member, stats);\n      await interaction.editReply('✅ Arrival preview posted in 📌arrival.');\n      return;\n    }\n\n""" + level_handler_anchor
+          if "interaction.commandName === 'arrival-preview'" not in src:
+              src = src.replace(level_handler_anchor, preview_handler, 1)
+
+          (root / 'src' / 'index-v4.js').write_text(src)
+
+          # 4) Point package.json at the new engine and install sharp for PNG generation.
+          package_path = root / 'package.json'
+          package = json.loads(package_path.read_text())
+          package['version'] = '1.3.0'
+          package['main'] = 'src/index-v4.js'
+          package['scripts']['start'] = 'node src/index-v4.js'
+          package['scripts']['check'] = (
+              'node --check src/name-migrate.js && '
+              'node --check src/footer-migrate.js && '
+              'node --check src/level-store.js && '
+              'node --check src/welcome-card.js && '
+              'node --check src/index-v4.js && '
+              'node --check src/config.js'
+          )
+          package.setdefault('dependencies', {})['sharp'] = '^0.33.5'
+          package_path.write_text(json.dumps(package, indent=2) + '\n')
+
+      - name: Validate JavaScript
+        run: |
+          cd victorino-discord-bot
+          npm install --package-lock=false
+          npm run check
+
+      - name: Commit arrival upgrade
+        run: |
+          git config user.name "victorinoai"
+          git config user.email "victorino.rhv@gmail.com"
+          git add victorino-discord-bot/src/config.js \
+                  victorino-discord-bot/src/name-migrate.js \
+                  victorino-discord-bot/src/index-v4.js \
+                  victorino-discord-bot/package.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Upgrade Discord personalized arrival experience"
+          git push origin victorino-discord-bot
