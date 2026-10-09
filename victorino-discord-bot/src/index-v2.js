@@ -255,7 +255,10 @@ async function upsertBotMessage(channel, marker, payload) {
   if (!channel || channel.type !== ChannelType.GuildText) return null;
   const messages = await channel.messages.fetch({ limit: 50 }).catch(() => null);
   const existing = messages?.find(
-    message => message.author.id === client.user.id && message.embeds.some(embed => embed.footer?.text === marker),
+    message => message.author.id === client.user.id && (
+      message.embeds.some(embed => embed.footer?.text === marker) ||
+      message.embeds.length > 0
+    ),
   );
 
   if (existing) {
@@ -266,11 +269,10 @@ async function upsertBotMessage(channel, marker, payload) {
   return channel.send(payload);
 }
 
-function infoEmbed(title, description, marker) {
+function infoEmbed(title, description) {
   return new EmbedBuilder()
     .setTitle(title)
-    .setDescription(description)
-    .setFooter({ text: marker });
+    .setDescription(description);
 }
 
 function buildRolePanel() {
@@ -500,8 +502,7 @@ async function handleProjectCreate(interaction) {
       { name: 'Status', value: '🟢 ACTIVE', inline: true },
       { name: 'Workflow', value: '📋 Brief → ✍️ Script → 🧩 Storyboard → 🤖 Assets → 🎬 Edit → ✅ QC → 📦 Delivery' },
       { name: 'Project discipline', value: 'Keep decisions, revisions, links, and delivery notes in this channel so the project remains traceable.' },
-    )
-    .setFooter({ text: 'VICTORINO_PROJECT_KICKOFF' });
+    );
 
   const message = await channel.send({ embeds: [kickoff] });
   await message.pin().catch(() => null);
