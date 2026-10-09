@@ -1,4 +1,4 @@
-name: Embed Victorino favicon
+name: Set favicon-optimized Victorino icon
 
 on:
   push:
@@ -15,35 +15,27 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Embed Victorino V favicon into HTML
+      - name: Point HTML to favicon-optimized V icon
         run: |
           python - <<'PY'
           from pathlib import Path
-          import base64
           import re
 
-          html_path = Path('my-portfolio/index.html')
-          icon_path = Path('my-portfolio/favicon-victorino-v2.png')
+          path = Path('my-portfolio/index.html')
+          text = path.read_text(encoding='utf-8')
 
-          text = html_path.read_text(encoding='utf-8')
-          data_uri = 'data:image/png;base64,' + base64.b64encode(icon_path.read_bytes()).decode('ascii')
-
-          pattern = re.compile(
-              r'\s*<link rel="icon" id="site-favicon"[^>]*>\s*<script>.*?</script>\s*',
-              re.DOTALL,
-          )
-          replacement = '\n  <link rel="icon" type="image/png" sizes="64x64" href="' + data_uri + '" />\n'
-
+          pattern = re.compile(r'\s*<link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,[^"]+" />\s*')
+          replacement = '''\n  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-v3.png?rev=3" />\n  <link rel="shortcut icon" type="image/png" href="/favicon-v3.png?rev=3" />\n'''
           updated, count = pattern.subn(replacement, text, count=1)
           if count != 1:
-              raise SystemExit(f'Expected one existing favicon block, found {count}.')
+              raise SystemExit(f'Expected one embedded favicon tag, found {count}.')
 
-          html_path.write_text(updated, encoding='utf-8')
+          path.write_text(updated, encoding='utf-8')
           PY
-      - name: Commit embedded favicon
+      - name: Commit favicon reference
         run: |
           git config user.name "victorinoai"
           git config user.email "victorino.rhv@gmail.com"
           git add my-portfolio/index.html
-          git commit -m "Embed Victorino V favicon directly"
+          git commit -m "Use favicon-optimized Victorino V icon"
           git push origin main
