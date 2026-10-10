@@ -57,7 +57,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.25rem 2rem;
+      gap: 1rem;
+      padding: 1.1rem 2rem;
       background: linear-gradient(to bottom, rgba(10,6,4,0.85) 0%, transparent 100%);
       backdrop-filter: blur(0px);
     }
@@ -66,7 +67,30 @@
       font-size: 1.25rem;
       letter-spacing: 0.05em;
       color: var(--white);
+      white-space: nowrap;
     }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 1.1rem;
+      min-width: 0;
+    }
+    .nav-socials {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      min-width: 0;
+    }
+    .nav-socials a {
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: rgba(245,240,235,0.7);
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .nav-socials a:hover { color: var(--orange); }
+    .nav-socials a:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 2px; }
     .nav-cta {
       display: inline-flex;
       align-items: center;
@@ -81,9 +105,32 @@
       border: none;
       cursor: pointer;
       transition: background 0.2s ease;
+      white-space: nowrap;
     }
     .nav-cta:hover { background: var(--burnt); }
     .nav-cta:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+    @media (max-width: 760px) {
+      .nav {
+        flex-wrap: wrap;
+        padding: 0.8rem 1rem;
+        gap: 0.55rem;
+        background: rgba(10,6,4,0.9);
+      }
+      .nav-logo { font-size: 1rem; }
+      .nav-right {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.6rem;
+      }
+      .nav-socials {
+        gap: 0.65rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .nav-socials::-webkit-scrollbar { display: none; }
+      .nav-socials a { font-size: 0.66rem; }
+      .nav-cta { font-size: 0.74rem; padding: 0.5rem 0.8rem; }
+    }
 
     .hero {
       position: relative;
@@ -473,26 +520,20 @@
       color: var(--white);
     }
     .footer-copy { font-size: 0.75rem; color: var(--gray); }
-    .footer-socials {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 0.25rem;
-    }
-    .footer-socials a {
-      font-size: 0.75rem;
-      color: var(--gray);
-      transition: color 0.2s ease;
-    }
-    .footer-socials a:hover { color: var(--orange); }
-    .footer-socials a:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 2px; }
   </style>
 </head>
 <body>
   <nav class="nav" aria-label="Main navigation">
     <span class="nav-logo">Reb Howard Victorino</span>
-    <a href="mailto:victorino.rhv@gmail.com" class="nav-cta">Get in touch</a>
+    <div class="nav-right">
+      <div class="nav-socials" aria-label="Social media links">
+        <a href="https://www.facebook.com/reb.howard.victorino/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href="https://www.instagram.com/igvictorino/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.tiktok.com/@thevctrno" target="_blank" rel="noopener noreferrer">TikTok</a>
+        <a href="https://www.linkedin.com/in/reb-howard-victorino-6445a5338/?isSelfProfile=true" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+      <a href="mailto:victorino.rhv@gmail.com" class="nav-cta">Get in touch</a>
+    </div>
   </nav>
 
   <section class="hero" aria-label="Hero">
@@ -667,12 +708,6 @@
   <footer class="footer">
     <span class="footer-name">Reb Howard Victorino</span>
     <p class="footer-copy">&copy; 2025 Reb Howard Victorino. All rights reserved.</p>
-    <div class="footer-socials">
-      <a href="https://www.facebook.com/reb.howard.victorino/" target="_blank" rel="noopener noreferrer">Facebook</a>
-      <a href="https://www.instagram.com/igvictorino/" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a href="https://www.tiktok.com/@thevctrno" target="_blank" rel="noopener noreferrer">TikTok</a>
-      <a href="https://www.linkedin.com/in/reb-howard-victorino-6445a533/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-    </div>
   </footer>
 
   <script>
