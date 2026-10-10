@@ -95,23 +95,31 @@ const arrivalFunction = `async function sendArrival(member, stats) {
         name: 'Next step',
         value: 'Read the rules, complete onboarding, then choose your production role.',
       },
-    )
-    .setThumbnail('attachment://victorino-emblem.gif');
+    );
 
   const payload = {
     content: \`Welcome <@\${member.id}> 👋\`,
     embeds: [embed],
     components: row.components.length ? [row] : [],
     allowedMentions: { users: [member.id] },
-    files: [{ attachment: getAnimatedLogo(), name: 'victorino-emblem.gif' }],
+    files: [],
   };
+
+  try {
+    const animatedLogo = getAnimatedLogo();
+    embed.setThumbnail('attachment://victorino-emblem.gif');
+    payload.files.push({ attachment: animatedLogo, name: 'victorino-emblem.gif' });
+  } catch (error) {
+    console.error('animated-logo generation failed; continuing without thumbnail:', error);
+    embed.setThumbnail(member.guild.iconURL({ size: 256 }) || member.user.displayAvatarURL({ size: 256 }));
+  }
 
   try {
     const card = await buildWelcomeCard(member, \`LEVEL \${stats.level} | \${milestone.label}\`);
     embed.setImage('attachment://victorino-welcome.png');
     payload.files.push({ attachment: card, name: 'victorino-welcome.png' });
   } catch (error) {
-    console.error('welcome-card generation failed:', error);
+    console.error('welcome-card generation failed; continuing without main card:', error);
   }
 
   await channel.send(payload).catch(error => console.error('arrival send failed:', error));
@@ -132,4 +140,4 @@ if (!src.includes("interaction.commandName === 'arrival-preview'")) {
 }
 
 fs.writeFileSync(targetPath, src);
-console.log('Arrival runtime patch complete. index-v4.js generated with animated emblem thumbnail.');
+console.log('Arrival runtime patch complete. index-v4.js generated with resilient animated emblem thumbnail.');
