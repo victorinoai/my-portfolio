@@ -22,6 +22,13 @@ if (!src.includes("require('./welcome-card')")) {
   );
 }
 
+if (!src.includes("require('./animated-logo')")) {
+  src = src.replace(
+    "const { buildWelcomeCard } = require('./welcome-card');",
+    "const { buildWelcomeCard } = require('./welcome-card');\nconst { getAnimatedLogo } = require('./animated-logo');",
+  );
+}
+
 src = src.replace("byName('welcome')", "byName('arrival')");
 
 const rolePanelCommand = `  new SlashCommandBuilder()\n    .setName('role-panel')\n    .setDescription('Repost the production role selection panel.')\n    .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),\n`;
@@ -88,22 +95,23 @@ const arrivalFunction = `async function sendArrival(member, stats) {
         name: 'Next step',
         value: 'Read the rules, complete onboarding, then choose your production role.',
       },
-    );
+    )
+    .setThumbnail('attachment://victorino-emblem.gif');
 
   const payload = {
     content: \`Welcome <@\${member.id}> 👋\`,
     embeds: [embed],
     components: row.components.length ? [row] : [],
     allowedMentions: { users: [member.id] },
+    files: [{ attachment: getAnimatedLogo(), name: 'victorino-emblem.gif' }],
   };
 
   try {
     const card = await buildWelcomeCard(member, \`LEVEL \${stats.level} | \${milestone.label}\`);
     embed.setImage('attachment://victorino-welcome.png');
-    payload.files = [{ attachment: card, name: 'victorino-welcome.png' }];
+    payload.files.push({ attachment: card, name: 'victorino-welcome.png' });
   } catch (error) {
     console.error('welcome-card generation failed:', error);
-    embed.setThumbnail(member.user.displayAvatarURL({ size: 256 }));
   }
 
   await channel.send(payload).catch(error => console.error('arrival send failed:', error));
@@ -124,4 +132,4 @@ if (!src.includes("interaction.commandName === 'arrival-preview'")) {
 }
 
 fs.writeFileSync(targetPath, src);
-console.log('Arrival runtime patch complete. index-v4.js generated.');
+console.log('Arrival runtime patch complete. index-v4.js generated with animated emblem thumbnail.');
