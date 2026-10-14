@@ -524,6 +524,45 @@
       color: var(--white);
     }
     .footer-copy { font-size: 0.75rem; color: var(--gray); }
+
+    /* Vertical films in phone frames, with the original player controls. */
+    .work-intro { color:var(--gray); font-size:0.95rem; max-width:54ch; margin-top:-1rem; }
+    #work-heading { scroll-margin-top:100px; }
+    .gallery-hint { display:none; font-size:0.72rem; letter-spacing:0.1em; color:var(--gray); }
+    .phone-gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:3.5rem; max-width:740px; margin:3rem auto 4.5rem; padding:0.75rem; align-items:start; }
+    .phone-gallery:focus-visible { outline:2px solid var(--orange); outline-offset:6px; border-radius:12px; }
+    .phone-card { min-width:0; text-align:left; }
+    .phone-device { position:relative; width:100%; max-width:278px; margin:0 auto; padding:11px; border:2px solid #45413f; border-radius:38px; background:linear-gradient(145deg,#282524,#080707 32%,#151211); box-shadow:0 20px 50px #0007,inset 0 0 0 2px #000; }
+    .phone-device::before,.phone-device::after { content:''; position:absolute; background:#45413f; width:4px; border-radius:3px; }
+    .phone-device::before { left:-5px; top:78px; height:40px; box-shadow:0 48px #45413f; }
+    .phone-device::after { right:-5px; top:98px; height:54px; }
+    .phone-screen { position:relative; width:100%; aspect-ratio:9/16; overflow:hidden; border-radius:26px; background:#000; }
+    .phone-speaker { position:absolute; top:17px; left:50%; transform:translateX(-50%); width:55px; height:13px; border:4px solid #0b0908; border-radius:12px; background:#383432; pointer-events:none; z-index:2; }
+    .phone-home { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); width:58px; height:3px; border-radius:5px; background:#f5f0eb70; pointer-events:none; z-index:2; }
+    .phone-caption { max-width:278px; margin:1.5rem auto 0; }
+    .film-type { display:block; font-size:0.66rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--orange); margin-bottom:0.55rem; }
+    .phone-caption .work-title { font-size:1.65rem; margin-bottom:1rem; }
+    .film-details { border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .film-details summary { display:flex; justify-content:space-between; align-items:center; gap:12px; cursor:pointer; list-style:none; padding:0.9rem 0; font-size:0.8rem; color:var(--white); }
+    .film-details summary::-webkit-details-marker { display:none; }
+    .film-details summary span { font-size:1.25rem; color:var(--orange); transition:transform 0.2s; }
+    .film-details[open] summary span { transform:rotate(45deg); }
+    .film-details summary:focus-visible,.film-link:focus-visible { outline:2px solid var(--orange); outline-offset:4px; }
+    .film-details-body { padding:0.5rem 0 0; }
+    .phone-caption .work-row { margin-bottom:1.2rem; }
+    .phone-caption .work-row p { font-size:0.8rem; }
+    .phone-caption .tool-tag { font-size:0.66rem; padding:0.2rem 0.55rem; }
+    .film-link { display:inline-flex; align-items:center; gap:8px; color:var(--gray); font-size:0.74rem; margin-top:0.85rem; }
+    .film-link:hover { color:var(--white); }
+    .client-film { border-top:1px solid var(--border); padding-top:3.5rem; }
+    .client-film .work-video-wrap { border-radius:12px; }
+    @media(max-width:639px) {
+      .gallery-hint { display:block; margin-top:1.5rem; }
+      .phone-gallery { display:flex; gap:1.75rem; max-width:none; overflow-x:auto; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; margin:1rem -0.5rem 3rem; padding:1rem 0.5rem 1.5rem; scrollbar-width:thin; scrollbar-color:var(--burnt) transparent; }
+      .phone-card { flex:0 0 min(76vw,278px); scroll-snap-align:start; }
+      .phone-caption { margin-top:1.25rem; }
+      .client-film { padding-top:2.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -581,15 +620,26 @@
   <section class="work-wrap" aria-labelledby="work-heading">
     <div class="section">
       <span class="section-label">Selected Work</span>
-      <h2 class="section-heading" id="work-heading">Case Studies</h2>
+      <h2 class="section-heading" id="work-heading">Video Portfolio</h2>
 
-      <div class="work-inner">
-        <div class="work-video-wrap">
-          <iframe class="work-video" src="https://player.vimeo.com/video/1232986808?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" width="1080" height="1920" frameborder="0" title="UGC ADS - PRIMALLY PURE" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <div class="work-meta">
-          <h3 class="work-title">UGC ADS - PRIMALLY PURE</h3>
-          <div class="work-row">
+      <p class="work-intro">AI video ads, creative concepts, and client work.</p>
+      <span class="gallery-hint">Swipe to explore <span aria-hidden="true">→</span></span>
+      <div class="phone-gallery" role="region" aria-label="Vertical video portfolio" tabindex="0">
+        <article class="phone-card">
+          <div class="phone-device">
+            <span class="phone-speaker" aria-hidden="true"></span>
+            <div class="phone-screen">
+              <iframe class="work-video" src="https://player.vimeo.com/video/1232986808?badge=0&autopause=1&player_id=0&app_id=58479&autoplay=0&muted=0&loop=0&playsinline=1&dnt=1" width="1080" height="1920" frameborder="0" title="UGC ADS - PRIMALLY PURE" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <span class="phone-home" aria-hidden="true"></span>
+          </div>
+          <div class="phone-caption">
+            <span class="film-type">Portfolio sample · UGC ad</span>
+            <h3 class="work-title">UGC ADS - PRIMALLY PURE</h3>
+            <details class="film-details">
+              <summary>About this project <span aria-hidden="true">+</span></summary>
+              <div class="film-details-body">
+                <div class="work-row">
             <span class="work-row-label">Problem</span>
             <p>A skincare product needed a compelling product video in a UGC ad style.</p>
           </div>
@@ -610,16 +660,26 @@
               <span class="tool-tag">CapCut</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="work-inner">
-        <div class="work-video-wrap">
-          <iframe class="work-video" src="https://player.vimeo.com/video/1234398000?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" width="1080" height="1920" frameborder="0" title="AUTHORITY/EXPERT ADS - MURAD" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <div class="work-meta">
-          <h3 class="work-title">AUTHORITY/EXPERT ADS - MURAD</h3>
-          <div class="work-row">
+              </div>
+            </details>
+            <a class="film-link" href="https://vimeo.com/1232986808" target="_blank" rel="noopener noreferrer">Watch on Vimeo <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+        <article class="phone-card">
+          <div class="phone-device">
+            <span class="phone-speaker" aria-hidden="true"></span>
+            <div class="phone-screen">
+              <iframe class="work-video" src="https://player.vimeo.com/video/1234398000?badge=0&autopause=1&player_id=0&app_id=58479&autoplay=0&muted=0&loop=0&playsinline=1&dnt=1" width="1080" height="1920" frameborder="0" title="AUTHORITY/EXPERT ADS - MURAD" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <span class="phone-home" aria-hidden="true"></span>
+          </div>
+          <div class="phone-caption">
+            <span class="film-type">Portfolio sample · Expert-led ad</span>
+            <h3 class="work-title">AUTHORITY/EXPERT ADS - MURAD</h3>
+            <details class="film-details">
+              <summary>About this project <span aria-hidden="true">+</span></summary>
+              <div class="film-details-body">
+                <div class="work-row">
             <span class="work-row-label">Problem</span>
             <p>An acne-treatment product needed a more credible, education-led ad that could build trust around the skincare problem and solution instead of relying on a typical testimonial-style pitch.</p>
           </div>
@@ -640,12 +700,16 @@
               <span class="tool-tag">CapCut</span>
             </div>
           </div>
-        </div>
+              </div>
+            </details>
+            <a class="film-link" href="https://vimeo.com/1234398000" target="_blank" rel="noopener noreferrer">Watch on Vimeo <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
       </div>
 
-      <div class="work-inner">
+      <div class="work-inner client-film">
         <div class="work-video-wrap landscape">
-          <iframe class="work-video" src="https://player.vimeo.com/video/1234398020?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1" width="1920" height="1080" frameborder="0" title="VSL - BIM CONSULT PHILIPPINES" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          <iframe class="work-video" src="https://player.vimeo.com/video/1234398020?badge=0&autopause=1&player_id=0&app_id=58479&autoplay=0&muted=0&loop=1" width="1920" height="1080" frameborder="0" title="VSL - BIM CONSULT PHILIPPINES" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
         <div class="work-meta">
           <h3 class="work-title">VSL - BIM CONSULT PHILIPPINES</h3>
