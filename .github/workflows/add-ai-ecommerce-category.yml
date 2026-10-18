@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/add-ai-ecommerce-category.yml'
+      - '.github/scripts/add_ai_ecommerce.py'
 
 permissions:
   contents: write
@@ -17,134 +18,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Add AI E-commerce category
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
+      - name: Patch portfolio
+        run: python .github/scripts/add_ai_ecommerce.py
 
-          path = Path('my-portfolio/index.html')
-          html = path.read_text(encoding='utf-8')
-
-          def replace_once(old, new, label):
-              global html
-              if old not in html:
-                  raise SystemExit(f'Missing expected text for {label}')
-              html = html.replace(old, new, 1)
-
-          replace_once(
-              'Selected AI Work · 30 Videos · 7 Formats',
-              'Selected AI Work · 30 Videos · 8 Categories',
-              'portfolio summary'
-          )
-          replace_once(
-              'Explore AI video ads, creative concepts, and client work. Choose a format, then press play.',
-              'Explore AI video ads, creative concepts, and client work. Choose a category, then press play.',
-              'portfolio intro'
-          )
-
-          ugc_button = '<button type="button" class="category-filter" data-category="ugc" aria-pressed="true" aria-controls="category-ugc">AI UGC Ads <span>10</span></button>'
-          ecommerce_button = '<button type="button" class="category-filter" data-category="ecommerce" aria-pressed="false" aria-controls="category-ecommerce">AI E-commerce <span>10</span></button>'
-          replace_once(ugc_button, ugc_button + ecommerce_button, 'AI E-commerce filter button')
-
-          index_updates = {
-              '01 / 07': '01 / 08',
-              '02 / 07': '03 / 08',
-              '03 / 07': '04 / 08',
-              '04 / 07': '05 / 08',
-              '05 / 07': '06 / 08',
-              '06 / 07': '07 / 08',
-              '07 / 07': '08 / 08',
-          }
-          for old, new in index_updates.items():
-              if old not in html:
-                  raise SystemExit(f'Missing category index {old}')
-              html = html.replace(old, new, 1)
-
-          anchor = "      const status = root.querySelector('.portfolio-status');\n      let activeStage = null;"
-          ecommerce_setup = """      const status = root.querySelector('.portfolio-status');
-
-      const ecommerceIds = [
-        'film-whey',
-        'film-zenith-tallow',
-        'film-primally-pure',
-        'film-murad',
-        'film-lumin',
-        'film-heystrips-the-3-pm-crash',
-        'film-neuromd',
-        'film-hank-hemo-flow',
-        'film-okay-post-shave',
-        'film-byepest'
-      ];
-
-      const ecommerceSection = document.createElement('section');
-      ecommerceSection.className = 'portfolio-category';
-      ecommerceSection.id = 'category-ecommerce';
-      ecommerceSection.dataset.category = 'ecommerce';
-      ecommerceSection.setAttribute('aria-labelledby', 'heading-ecommerce');
-      ecommerceSection.hidden = true;
-      ecommerceSection.innerHTML = `
-        <div class="category-heading">
-          <div>
-            <span class="category-index">02 / 08</span>
-            <h3 id="heading-ecommerce">AI E-commerce</h3>
-            <p>Product-focused AI ads for DTC and e-commerce brands across supplements, skincare, wellness, grooming, and direct-response products.</p>
-          </div>
-          <span class="category-count">10 videos</span>
-        </div>
-        <div class="portfolio-grid"></div>`;
-
-      const ecommerceGrid = ecommerceSection.querySelector('.portfolio-grid');
-      ecommerceIds.forEach(id => {
-        const source = root.querySelector(`#${id}`);
-        if (!source) return;
-        const clone = source.cloneNode(true);
-
-        if (clone.id) clone.id = `ecommerce-${clone.id}`;
-        clone.querySelectorAll('[id]').forEach(el => { el.id = `ecommerce-${el.id}`; });
-        const labelledBy = clone.getAttribute('aria-labelledby');
-        if (labelledBy) clone.setAttribute('aria-labelledby', `ecommerce-${labelledBy}`);
-
-        const type = clone.querySelector('.film-type');
-        if (type) type.textContent = type.textContent.replace(/^AI [^·]+/, 'AI E-commerce');
-        const poster = clone.querySelector('.film-poster');
-        if (poster) {
-          const label = poster.getAttribute('aria-label') || '';
-          poster.setAttribute('aria-label', label.replace(/\([^)]*\)$/, '(AI E-commerce)'));
-        }
-        ecommerceGrid.appendChild(clone);
-      });
-
-      const ugcSection = root.querySelector('#category-ugc');
-      if (ugcSection) ugcSection.insertAdjacentElement('afterend', ecommerceSection);
-      sections.push(ecommerceSection);
-
-      let activeStage = null;"""
-          replace_once(anchor, ecommerce_setup, 'AI E-commerce category setup')
-
-          old_show = """        sections.forEach(section => { section.hidden = category !== 'all' && section.dataset.category !== category; });
-        const visible = sections.filter(section => !section.hidden);
-        const count = visible.reduce((sum, section) => sum + section.querySelectorAll('.portfolio-card').length, 0);
-        const label = category === 'all' ? 'all AI formats' : visible[0].querySelector('h3').textContent;
-        status.textContent = `Showing ${count} videos in ${label}.`;"""
-          new_show = """        sections.forEach(section => {
-          if (category === 'all') {
-            section.hidden = section.dataset.category === 'ecommerce';
-          } else {
-            section.hidden = section.dataset.category !== category;
-          }
-        });
-        const visible = sections.filter(section => !section.hidden);
-        const count = visible.reduce((sum, section) => sum + section.querySelectorAll('.portfolio-card').length, 0);
-        const label = category === 'all' ? 'all AI work' : visible[0].querySelector('h3').textContent;
-        status.textContent = `Showing ${count} videos in ${label}.`;"""
-          replace_once(old_show, new_show, 'category filtering logic')
-
-          path.write_text(html, encoding='utf-8')
-          PY
-
-      - name: Validate e-commerce category
-        shell: bash
+      - name: Validate category
         run: |
           grep -q 'data-category="ecommerce"' my-portfolio/index.html
           grep -q 'AI E-commerce <span>10</span>' my-portfolio/index.html
@@ -152,7 +29,6 @@ jobs:
           grep -q 'Selected AI Work · 30 Videos · 8 Categories' my-portfolio/index.html
 
       - name: Commit portfolio update
-        shell: bash
         run: |
           if git diff --quiet -- my-portfolio/index.html; then
             echo "No portfolio changes needed."
