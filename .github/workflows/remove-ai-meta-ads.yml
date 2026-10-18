@@ -1,0 +1,83 @@
+name: Remove AI Meta Ads portfolio category
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/remove-ai-meta-ads.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-portfolio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove AI Meta Ads section and update counts
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('my-portfolio/index.html')
+          s = path.read_text()
+
+          # Remove the AI Meta Ads filter button.
+          s, n_button = re.subn(
+              r'<button type="button" class="category-filter" data-category="meta" aria-pressed="false" aria-controls="category-meta">AI Meta Ads <span>2</span></button>',
+              '',
+              s,
+              count=1,
+          )
+
+          # Remove the entire AI Meta Ads category, including both embedded video cards.
+          s, n_section = re.subn(
+              r'<section class="portfolio-category" id="category-meta" data-category="meta" aria-labelledby="heading-meta">.*?</section>(?=<section class="portfolio-category")',
+              '',
+              s,
+              count=1,
+              flags=re.S,
+          )
+
+          # Update overall counts.
+          s = s.replace('Selected AI Work · 32 Videos · 8 Formats', 'Selected AI Work · 30 Videos · 7 Formats')
+          s = s.replace('All AI Work <span>32</span>', 'All AI Work <span>30</span>')
+
+          # Renumber category indexes after removing category 04.
+          def renumber(m):
+              num = int(m.group(1))
+              if num > 4:
+                  num -= 1
+              return f'{num:02d} / 07'
+          s = re.sub(r'(\d{2}) / 08', renumber, s)
+
+          if n_button != 1:
+              raise SystemExit(f'Expected to remove 1 Meta filter button, removed {n_button}')
+          if n_section != 1:
+              raise SystemExit(f'Expected to remove 1 Meta category section, removed {n_section}')
+          if 'category-meta' in s or 'AI Meta Ads' in s:
+              raise SystemExit('AI Meta Ads references remain after patch')
+          if '1236725957' in s or '1236725961' in s:
+              raise SystemExit('Meta ad Vimeo IDs remain after patch')
+
+          path.write_text(s)
+          PY
+
+      - name: Remove obsolete Meta ad thumbnails
+        shell: bash
+        run: |
+          rm -f my-portfolio/images/portfolio/pet-dental-care-version-1.webp
+          rm -f my-portfolio/images/portfolio/pet-dental-care-version-2.webp
+
+      - name: Commit portfolio update and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/remove-ai-meta-ads.yml
+          git add my-portfolio/index.html my-portfolio/images/portfolio || true
+          git commit -m "Remove AI Meta Ads category and videos"
+          git push
