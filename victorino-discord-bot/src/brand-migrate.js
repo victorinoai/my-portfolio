@@ -4,6 +4,7 @@ const fs = require('fs');
 const {
   ChannelType,
   Client,
+  Events,
   GatewayIntentBits,
 } = require('discord.js');
 
@@ -28,18 +29,9 @@ function rebrandText(value) {
     .replaceAll('VICTORINO', TARGET_NAME);
 }
 
-function deepRebrand(value) {
-  if (typeof value === 'string') return rebrandText(value);
-  if (Array.isArray(value)) return value.map(deepRebrand);
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, deepRebrand(entry)]));
-  }
-  return value;
-}
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
-
-client.once('ready', async () => {
+client.once(Events.ClientReady, async () => {
   try {
     const guild = await client.guilds.fetch(guildId);
     await guild.fetch();
@@ -47,6 +39,8 @@ client.once('ready', async () => {
     if (guild.name !== TARGET_NAME) {
       await guild.setName(TARGET_NAME, 'VICTORINO rebrand to VICTO HQ');
       console.log(`Guild renamed to ${TARGET_NAME}.`);
+    } else {
+      console.log(`Guild name confirmed as ${TARGET_NAME}.`);
     }
 
     if (guild.description && guild.description.includes('VICTORINO')) {
@@ -54,7 +48,7 @@ client.once('ready', async () => {
     }
 
     const me = await guild.members.fetchMe().catch(() => null);
-    if (me && me.manageable && me.nickname !== TARGET_NAME) {
+    if (me && me.nickname !== TARGET_NAME) {
       await me.setNickname(TARGET_NAME, 'VICTORINO rebrand to VICTO HQ').catch(() => null);
     }
 
@@ -62,10 +56,9 @@ client.once('ready', async () => {
 
     let renamedChannels = 0;
     let updatedTopics = 0;
-    let updatedMessages = 0;
 
     for (const channel of guild.channels.cache.values()) {
-      if (channel.name && channel.name.includes('VICTORINO')) {
+      if (channel.name?.includes('VICTORINO')) {
         const nextName = rebrandText(channel.name);
         if (nextName !== channel.name) {
           await channel.setName(nextName, 'VICTORINO rebrand to VICTO HQ').catch(() => null);
@@ -77,26 +70,6 @@ client.once('ready', async () => {
         await channel.setTopic(rebrandText(channel.topic)).catch(() => null);
         updatedTopics += 1;
       }
-
-      if (channel.type !== ChannelType.GuildText || !channel.messages) continue;
-
-      const messages = await channel.messages.fetch({ limit: 100 }).catch(() => null);
-      if (!messages) continue;
-
-      for (const message of messages.values()) {
-        if (message.author.id !== client.user.id) continue;
-
-        const oldContent = message.content || '';
-        const oldEmbeds = message.embeds.map(embed => embed.toJSON());
-        const newContent = rebrandText(oldContent);
-        const newEmbeds = deepRebrand(oldEmbeds);
-
-        const changed = newContent !== oldContent || JSON.stringify(newEmbeds) !== JSON.stringify(oldEmbeds);
-        if (!changed) continue;
-
-        await message.edit({ content: newContent, embeds: newEmbeds }).catch(() => null);
-        updatedMessages += 1;
-      }
     }
 
     fs.mkdirSync('/data', { recursive: true });
@@ -106,10 +79,9 @@ client.once('ready', async () => {
       name: TARGET_NAME,
       renamedChannels,
       updatedTopics,
-      updatedMessages,
     }, null, 2));
 
-    console.log(`VICTO HQ migration complete. Channels renamed: ${renamedChannels}. Topics updated: ${updatedTopics}. Bot messages updated: ${updatedMessages}.`);
+    console.log(`VICTO HQ migration complete. Channels renamed: ${renamedChannels}. Topics updated: ${updatedTopics}.`);
     client.destroy();
     process.exit(0);
   } catch (error) {
