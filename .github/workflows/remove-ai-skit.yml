@@ -1,0 +1,60 @@
+name: Remove AI Skit Ads
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/remove-ai-skit.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-portfolio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove AI Skit Ads category
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('my-portfolio/index.html')
+          text = path.read_text(encoding='utf-8')
+
+          text = text.replace('Selected AI Work · 30 Videos · 8 Categories', 'Selected AI Work · 27 Videos · 7 Categories')
+          text = text.replace('<button type="button" class="category-filter" data-category="skit" aria-pressed="false" aria-controls="category-skit">AI Skit Ads <span>3</span></button>', '')
+          text = text.replace('<button type="button" class="category-filter" data-category="all" aria-pressed="false">All AI Work <span>30</span></button>', '<button type="button" class="category-filter" data-category="all" aria-pressed="false">All AI Work <span>27</span></button>')
+
+          pattern = r'</section><section class="portfolio-category" id="category-skit" data-category="skit" aria-labelledby="heading-skit">[\s\S]*?</section><section class="portfolio-category" id="category-vsl"'
+          text, removed = re.subn(pattern, '</section><section class="portfolio-category" id="category-vsl"', text, count=1)
+          if removed != 1:
+              raise SystemExit(f'Expected to remove exactly one skit category, removed {removed}')
+
+          replacements = {
+              '01 / 08': '01 / 07',
+              '02 / 08': '02 / 07',
+              '04 / 08': '03 / 07',
+              '05 / 08': '04 / 07',
+              '06 / 08': '05 / 07',
+              '07 / 08': '06 / 07',
+              '08 / 08': '07 / 07',
+          }
+          for old, new in replacements.items():
+              text = text.replace(old, new)
+
+          if 'data-category="skit"' in text or 'AI Skit Ads' in text or 'category-skit' in text:
+              raise SystemExit('Skit references still remain in index.html')
+          if 'Selected AI Work · 27 Videos · 7 Categories' not in text:
+              raise SystemExit('Portfolio totals were not updated')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit portfolio update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add my-portfolio/index.html
+          git commit -m "Remove AI Skit Ads from portfolio [skip ci]"
+          git push
