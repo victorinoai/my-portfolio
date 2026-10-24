@@ -1,0 +1,101 @@
+name: Restore AI Meta Ads portfolio category
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-ai-meta-ads.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  restore-meta-ads:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore AI Meta Ads category and thumbnails
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import subprocess
+
+          path = Path('my-portfolio/index.html')
+          html = path.read_text(encoding='utf-8')
+          source_commit = '67ee0e23714a739f8137dbeab7b85a359e05a5ef'
+          old = subprocess.check_output(
+              ['git', 'show', f'{source_commit}:my-portfolio/index.html'],
+              text=True,
+          )
+
+          if 'id="category-meta"' not in html:
+              meta_button_match = re.search(
+                  r'<button type="button" class="category-filter" data-category="meta".*?</button>',
+                  old,
+                  re.S,
+              )
+              meta_section_match = re.search(
+                  r'<section class="portfolio-category" id="category-meta".*?</section>(?=<section class="portfolio-category" id="category-claymation")',
+                  old,
+                  re.S,
+              )
+              if not meta_button_match or not meta_section_match:
+                  raise SystemExit('Could not recover the original AI Meta Ads markup.')
+
+              vsl_button = '<button type="button" class="category-filter" data-category="vsl" aria-pressed="false" aria-controls="category-vsl">AI VSL <span>5</span></button>'
+              if vsl_button not in html:
+                  raise SystemExit('Could not find AI VSL filter insertion point.')
+              html = html.replace(vsl_button, vsl_button + meta_button_match.group(0), 1)
+
+              clay_anchor = '<section class="portfolio-category" id="category-claymation"'
+              if clay_anchor not in html:
+                  raise SystemExit('Could not find Claymation category insertion point.')
+              html = html.replace(clay_anchor, meta_section_match.group(0) + clay_anchor, 1)
+
+          replacements = {
+              'Selected AI Work · 27 Videos · 7 Categories': 'Selected AI Work · 29 Videos · 8 Categories',
+              'All AI Work <span>27</span>': 'All AI Work <span>29</span>',
+              '01 / 07': '01 / 08',
+              '03 / 07': '03 / 08',
+              '04 / 07': '05 / 08',
+              '05 / 07': '06 / 08',
+              '06 / 07': '07 / 08',
+              '07 / 07': '08 / 08',
+          }
+          for before, after in replacements.items():
+              if before in html:
+                  html = html.replace(before, after, 1)
+
+          path.write_text(html, encoding='utf-8')
+          PY
+
+          mkdir -p my-portfolio/images/portfolio
+          git show 67ee0e23714a739f8137dbeab7b85a359e05a5ef:my-portfolio/images/portfolio/pet-dental-care-version-2.webp > my-portfolio/images/portfolio/pet-dental-care-version-2.webp
+          git show 67ee0e23714a739f8137dbeab7b85a359e05a5ef:my-portfolio/images/portfolio/pet-dental-care-version-1.webp > my-portfolio/images/portfolio/pet-dental-care-version-1.webp
+
+      - name: Validate restored portfolio
+        run: |
+          grep -q 'AI Meta Ads <span>2</span>' my-portfolio/index.html
+          grep -q 'data-vimeo="1236725957"' my-portfolio/index.html
+          grep -q 'data-vimeo="1236725961"' my-portfolio/index.html
+          grep -q 'Selected AI Work · 29 Videos · 8 Categories' my-portfolio/index.html
+          grep -q 'All AI Work <span>29</span>' my-portfolio/index.html
+          test -s my-portfolio/images/portfolio/pet-dental-care-version-2.webp
+          test -s my-portfolio/images/portfolio/pet-dental-care-version-1.webp
+
+      - name: Commit restored Meta Ads
+        run: |
+          if git diff --quiet -- my-portfolio/index.html my-portfolio/images/portfolio; then
+            echo "AI Meta Ads are already restored."
+            exit 0
+          fi
+          git config user.name "Victo Portfolio Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add my-portfolio/index.html my-portfolio/images/portfolio/pet-dental-care-version-2.webp my-portfolio/images/portfolio/pet-dental-care-version-1.webp
+          git commit -m "Restore AI Meta Ads portfolio category [skip ci]"
+          git push origin HEAD:main
