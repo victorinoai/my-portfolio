@@ -507,6 +507,48 @@
       .contact-inner { grid-template-columns: 1fr 1fr; gap: 4rem; }
     }
 
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 0.75rem;
+      color: var(--white);
+      font-family: var(--ff-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.8rem 1.75rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(245,240,235,0.5);
+      transition: border-color 0.2s ease;
+    }
+    .btn-outline:hover { border-color: var(--orange); }
+    .btn-outline:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+    @media (max-width: 480px) { .btn-outline { margin: 0.75rem 0 0; } }
+
+    .test-wrap { background: var(--burgundy); border-top: 1px solid var(--border); }
+    .test-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+    @media (min-width: 768px) { .test-grid { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+    .test-intro p { color: rgba(245,240,235,0.8); font-weight: 300; max-width: 44ch; margin-bottom: 1rem; }
+    .test-list { list-style: none; color: rgba(245,240,235,0.8); font-weight: 300; }
+    .test-list li { padding-left: 1.25rem; position: relative; margin-bottom: 0.4rem; }
+    .test-list li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--orange); }
+    .test-form { display: grid; gap: 1rem; }
+    .test-form label { display: grid; gap: 0.35rem; font-size: 0.85rem; color: rgba(245,240,235,0.85); }
+    .test-form input, .test-form textarea {
+      font: inherit;
+      font-size: 1rem;
+      color: var(--white);
+      background: var(--black);
+      border: 1px solid rgba(245,240,235,0.2);
+      border-radius: 0.5rem;
+      padding: 0.75rem 0.9rem;
+      width: 100%;
+    }
+    .test-form textarea { min-height: 6rem; resize: vertical; }
+    .test-form input:focus, .test-form textarea:focus { outline: 2px solid var(--orange); outline-offset: 1px; border-color: transparent; }
+    .test-form .btn-primary { justify-self: start; border: none; cursor: pointer; }
+    .test-note { font-size: 0.8rem; color: var(--gray); }
+    .test-note a { color: var(--white); }
+
     .footer {
       background: var(--black);
       border-top: 1px solid var(--border);
@@ -635,6 +677,7 @@
       <h1 class="hero-headline">Need Product Videos Without a Full Production Setup?</h1>
       <p class="hero-sub">I create product-focused video ads for e-commerce brands using AI-powered production, from concept through final edit.</p>
       <a href="mailto:victorino.rhv@gmail.com" class="btn-primary">Send an Email</a>
+      <a href="#free-test" class="btn-outline">Get a free 3-hook test</a>
     </div>
   </section>
 
@@ -1192,6 +1235,42 @@
     </div>
   </div>
 
+  <section class="test-wrap" id="free-test" aria-labelledby="test-heading">
+    <div class="section">
+      <span class="section-label">Free 3-hook test</span>
+      <div class="test-grid">
+        <div class="test-intro">
+          <h2 class="section-heading" id="test-heading">Test 3 Openings On Your Product</h2>
+          <p>Tell me about one product. I'll make 3 short video hooks for it that you can test on Instagram, TikTok or Facebook ads.</p>
+          <ul class="test-list">
+            <li>Free, no call needed</li>
+            <li>Two hooks share one line with different visuals; the third tries a different angle</li>
+            <li>Built from your real product and your own claims</li>
+          </ul>
+        </div>
+        <form class="test-form" id="test-form" novalidate>
+          <label>Your name
+            <input name="name" autocomplete="name" required maxlength="80">
+          </label>
+          <label>Brand
+            <input name="brand" autocomplete="organization" required maxlength="80">
+          </label>
+          <label>Product page or website
+            <input name="link" type="url" inputmode="url" placeholder="https://" required maxlength="300">
+          </label>
+          <label>Your email
+            <input name="email" type="email" autocomplete="email" required maxlength="120">
+          </label>
+          <label>Anything I should know? (optional)
+            <textarea name="notes" maxlength="1000" placeholder="Which product, who buys it, what your ads say now"></textarea>
+          </label>
+          <button type="submit" class="btn-primary">Request my 3 hooks</button>
+          <p class="test-note" id="test-status" role="status" aria-live="polite">This opens your email app with the details filled in. You can also email <a href="mailto:victorino.rhv@gmail.com">victorino.rhv@gmail.com</a> directly.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section class="contact-wrap" aria-labelledby="contact-heading">
     <div class="contact-inner">
       <h2 class="contact-heading" id="contact-heading">Have a product that needs a video ad?</h2>
@@ -1392,6 +1471,33 @@
         iframe.focus();
       });
       showCategory('ugc');
+    }());
+  </script>
+  <script>
+    // Free 3-hook test: no backend; builds a pre-filled email to Reb.
+    function buildTestMailto(f) {
+      var subject = 'Free 3-hook test: ' + f.brand;
+      var body = 'Name: ' + f.name + '\nBrand: ' + f.brand + '\nProduct page: ' + f.link +
+        '\nReply to: ' + f.email + (f.notes ? '\n\nNotes:\n' + f.notes : '');
+      return 'mailto:victorino.rhv@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    }
+    (function () {
+      var form = document.getElementById('test-form');
+      if (!form) return;
+      var status = document.getElementById('test-status');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          var bad = form.querySelector(':invalid');
+          status.textContent = 'Please fill in ' + bad.closest('label').firstChild.textContent.trim().toLowerCase() + ' correctly.';
+          bad.focus();
+          return;
+        }
+        var d = new FormData(form), f = {};
+        ['name', 'brand', 'link', 'email', 'notes'].forEach(function (k) { f[k] = String(d.get(k) || '').trim(); });
+        status.textContent = 'Opening your email app. Press send there to submit your request.';
+        window.location.href = buildTestMailto(f);
+      });
     }());
   </script>
 </body>
