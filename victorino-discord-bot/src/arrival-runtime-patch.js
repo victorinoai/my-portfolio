@@ -87,13 +87,8 @@ const arrivalFunction = `async function sendArrival(member, stats) {
     )
     .addFields(
       {
-        name: 'Starting status',
-        value: \`\${milestone.emoji} **Level \${stats.level} — \${milestone.label}**\`,
-        inline: true,
-      },
-      {
         name: 'Next step',
-        value: 'Read the rules, complete onboarding, then choose your production role.',
+        value: 'Read the rules, choose your production role, then say hi in general.',
       },
     );
 
@@ -115,7 +110,7 @@ const arrivalFunction = `async function sendArrival(member, stats) {
   }
 
   try {
-    const card = await buildWelcomeCard(member, \`LEVEL \${stats.level} | \${milestone.label}\`);
+    const card = await buildWelcomeCard(member, 'STUDIO ARRIVAL');
     embed.setImage('attachment://victorino-welcome.png');
     payload.files.push({ attachment: card, name: 'victorino-welcome.png' });
   } catch (error) {

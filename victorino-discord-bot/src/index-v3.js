@@ -55,19 +55,6 @@ const commands = [
     .setDescription('Repost the production role selection panel.')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
   new SlashCommandBuilder()
-    .setName('level')
-    .setDescription('Show a VICTORINO activity level and XP progress.')
-    .addUserOption(o => o.setName('member').setDescription('Optional member to view')),
-  new SlashCommandBuilder()
-    .setName('leaderboard')
-    .setDescription('Show the VICTORINO activity leaderboard.'),
-  new SlashCommandBuilder()
-    .setName('level-set')
-    .setDescription('Set a member to a specific activity level.')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .addUserOption(o => o.setName('member').setDescription('Member to update').setRequired(true))
-    .addIntegerOption(o => o.setName('level').setDescription('Level to assign').setRequired(true).setMinValue(1).setMaxValue(100)),
-  new SlashCommandBuilder()
     .setName('project-create')
     .setDescription('Create a private VICTORINO client project channel.')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
@@ -332,7 +319,7 @@ function buildLandingPanel(guild) {
     .setDescription(
       '**Remote Creative Operations**\n\n' +
       'This is the internal home for VICTORINO production, training, project coordination, quality control, and company operations.\n\n' +
-      '**Every new member begins at Level 1 — ARRIVAL.** Complete onboarding, choose your production role, then build your level naturally through useful participation inside the team.',
+      'Read the standards, choose your production role, then introduce yourself in general.',
     )
     .addFields(
       {
@@ -340,16 +327,12 @@ function buildLandingPanel(guild) {
         value: 'Review confidentiality, conduct, client-work, and security rules before entering production spaces.',
       },
       {
-        name: '02 — Complete onboarding',
-        value: 'Follow the new-member route so you know how VICTORINO operates before touching live work.',
+        name: '02 — Learn the workflow',
+        value: 'Review the training hub, SOPs, and tool stack. Trainees finish their practice tasks before live client work, and project channels are for active client work only.',
       },
       {
         name: '03 — Choose your role',
         value: 'Select your primary production role to unlock the internal team areas.',
-      },
-      {
-        name: 'Activity levels',
-        value: 'Levels reward consistent participation — not spam. XP has a cooldown and milestone roles are earned automatically.',
       },
     );
 
@@ -522,7 +505,7 @@ async function provisionGuild(guild) {
 
   await logTo(
     guild,
-    'bot-logs',
+    'logs',
     `✅ VICTORINO sync complete. Role changes: ${roleChanges.length}. Channel/category changes: ${channelChanges.length}. Levels synchronized: ${levelsSynced}.`,
   );
 
@@ -606,7 +589,7 @@ async function handleRoleButton(interaction) {
 
   const stats = levelStore.ensureUser(interaction.user.id, profileFor(interaction.member));
   await applyLevelRole(interaction.member, stats.level);
-  await logTo(interaction.guild, 'member-logs', `🎭 <@${interaction.user.id}> selected **${chosenRole.name}**.`);
+  await logTo(interaction.guild, 'logs', `🎭 <@${interaction.user.id}> selected **${chosenRole.name}**.`);
   await interaction.reply({ content: `✅ Role assigned: **${chosenRole.name}**. Team access is now enabled.`, ephemeral: true });
 }
 
@@ -663,7 +646,7 @@ async function handleLevelSet(interaction) {
   const stats = levelStore.setLevel(member.id, level, profileFor(member));
   await applyLevelRole(member, stats.level);
   await interaction.reply({ content: `✅ ${member} is now Level **${stats.level}** with ${stats.xp.toLocaleString()} XP.`, ephemeral: true });
-  await logTo(interaction.guild, 'member-logs', `📈 <@${interaction.user.id}> set <@${member.id}> to Level ${stats.level}.`);
+  await logTo(interaction.guild, 'logs', `📈 <@${interaction.user.id}> set <@${member.id}> to Level ${stats.level}.`);
 }
 
 function projectOverwrites(guild, members = []) {
@@ -736,7 +719,7 @@ async function handleProjectCreate(interaction) {
   const index = findChannel(interaction.guild, 'project-index', ChannelType.GuildText);
   if (index) await index.send(`📁 ${channel} — **${clientName}** / ${name}`);
 
-  await logTo(interaction.guild, 'project-logs', `📁 ${channel} created by <@${interaction.user.id}> for **${clientName}**.`);
+  await logTo(interaction.guild, 'logs', `📁 ${channel} created by <@${interaction.user.id}> for **${clientName}**.`);
   await interaction.reply({ content: `✅ Project created: ${channel}`, ephemeral: true });
 }
 
@@ -794,7 +777,7 @@ async function handleProjectArchive(interaction) {
     await channel.permissionOverwrites.edit(overwrite.id, { SendMessages: false }).catch(() => null);
   }
 
-  await logTo(interaction.guild, 'project-logs', `🗄️ ${channel} archived by <@${interaction.user.id}>.`);
+  await logTo(interaction.guild, 'logs', `🗄️ ${channel} archived by <@${interaction.user.id}>.`);
   await interaction.reply({ content: `🗄️ Archived ${channel}.`, ephemeral: true });
 }
 
@@ -834,7 +817,7 @@ client.on(Events.GuildMemberAdd, async member => {
 
     await applyLevelRole(member, stats.level);
     await sendArrival(member, stats);
-    await logTo(member.guild, 'member-logs', `👋 <@${member.id}> joined the server at Level ${stats.level}.`);
+    await logTo(member.guild, 'logs', `👋 <@${member.id}> joined the server.`);
   } catch (error) {
     console.error('guildMemberAdd error:', error);
   }
@@ -844,6 +827,7 @@ client.on(Events.MessageCreate, async message => {
   try {
     if (!message.guild || message.guild.id !== process.env.DISCORD_GUILD_ID) return;
     if (message.author.bot || !message.member) return;
+    return; // levels removed 2026-11-06 (Reb): no XP, no level-up posts
 
     const map = roleMap(message.guild);
     if (!map.team || !message.member.roles.cache.has(map.team.id)) return;

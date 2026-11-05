@@ -80,12 +80,6 @@ const roles = [
   { key: 'trainee', name: ROLE_NAMES.trainee, permissions: [], hoist: false, mentionable: true },
   { key: 'client', name: ROLE_NAMES.client, permissions: [], hoist: false, mentionable: false },
   { key: 'pending', name: ROLE_NAMES.pending, permissions: [], hoist: false, mentionable: false },
-  { key: 'level1', name: ROLE_NAMES.level1, permissions: [], hoist: false, mentionable: false },
-  { key: 'level5', name: ROLE_NAMES.level5, permissions: [], hoist: false, mentionable: false },
-  { key: 'level10', name: ROLE_NAMES.level10, permissions: [], hoist: false, mentionable: false },
-  { key: 'level20', name: ROLE_NAMES.level20, permissions: [], hoist: false, mentionable: false },
-  { key: 'level35', name: ROLE_NAMES.level35, permissions: [], hoist: false, mentionable: false },
-  { key: 'level50', name: ROLE_NAMES.level50, permissions: [], hoist: false, mentionable: false },
 ];
 
 const categories = [
@@ -95,7 +89,6 @@ const categories = [
     channels: [
       ['👋welcome', 'text', true, 'VICTORINO arrival and landing page. Start here when you join.'],
       ['📜rules', 'text', true, 'Internal standards, confidentiality, and team rules.'],
-      ['🧭onboarding', 'text', true, 'New member onboarding steps.'],
       ['🎭choose-role', 'text', true, 'Choose your primary production role.'],
       ['📣announcements', 'text', true, 'Official VICTORINO announcements.'],
     ],
@@ -108,7 +101,6 @@ const categories = [
       ['📅daily-updates', 'text', false, 'Daily priorities, blockers, and delivery updates.'],
       ['🏆wins', 'text', false, 'Client wins, milestones, finished work, and team shout-outs.'],
       ['🔊 Team Room', 'voice', false, null],
-      ['🎙️ Meeting Room', 'voice', false, null],
     ],
   },
   {
@@ -116,10 +108,8 @@ const categories = [
     access: 'leadership',
     channels: [
       ['👑founders', 'text', false, 'Founder and leadership decisions.'],
-      ['🧠management', 'text', false, 'Operations, staffing, priorities, and project oversight.'],
       ['💳finance-admin', 'text', false, 'Internal finance and administrative coordination.'],
       ['🔎hiring', 'text', false, 'Recruitment, interviews, and contractor discussions.'],
-      ['🔒 Leadership Room', 'voice', false, null],
     ],
   },
   {
@@ -136,13 +126,11 @@ const categories = [
     access: 'team',
     channels: [
       ['📋creative-briefs', 'text', false, 'Approved briefs and creative direction.'],
-      ['✍️script-lab', 'text', false, 'Hooks, scripts, VSL copy, and messaging work.'],
-      ['🧩storyboards', 'text', false, 'Shot plans, scene flow, and storyboard reviews.'],
+      ['✍️script-lab', 'text', false, 'Hooks, scripts, VSL copy, storyboards, and shot plans.'],
       ['🤖ai-generation', 'text', false, 'Image, video, voice, and generative production.'],
       ['🎞️editing-room', 'text', false, 'Edit passes, pacing, captions, sound, and finishing.'],
       ['✅quality-control', 'text', false, 'Final QA before anything reaches the client.'],
       ['🗂️asset-library', 'text', false, 'Links to approved brand assets, templates, and shared resources.'],
-      ['🎧 Editing Room', 'voice', false, null],
     ],
   },
   {
@@ -168,20 +156,15 @@ const categories = [
     name: '✨ 07 | CULTURE',
     access: 'team',
     channels: [
-      ['📈level-ups', 'text', true, 'VICTORINO activity levels, milestone roles, and level-up announcements.'],
-      ['🎞️showcase', 'text', false, 'Share finished work and strong creative references.'],
-      ['✨inspiration', 'text', false, 'Ads, visuals, editing references, and creative inspiration.'],
+      ['🎞️showcase', 'text', false, 'Finished work, strong ads, and creative references.'],
       ['☕random', 'text', false, 'Off-topic team chat.'],
-      ['🎙️ Lounge', 'voice', false, null],
     ],
   },
   {
     name: '📊 08 | LOGS',
     access: 'leadership',
     channels: [
-      ['🤖bot-logs', 'text', true, 'Automation and bot activity.'],
-      ['👥member-logs', 'text', true, 'Member joins and role changes.'],
-      ['📁project-logs', 'text', true, 'Project channel creation and archive logs.'],
+      ['🧾logs', 'text', true, 'Bot activity, member joins, role picks, and project logs.'],
     ],
   },
   {
