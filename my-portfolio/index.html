@@ -669,7 +669,7 @@
     <span class="section-label">Selected AI Work · 29 Videos · 9 Categories</span>
     <h2 class="section-heading" id="work-heading">Video Portfolio</h2>
     <p class="work-intro">Explore AI video ads, creative concepts, and client work. Choose a category, then press play.</p>
-    <div class="category-filters" role="group" aria-label="Filter AI video portfolio"><button type="button" class="category-filter" data-category="ugc" aria-pressed="true" aria-controls="category-ugc">AI UGC Ads <span>10</span></button><button type="button" class="category-filter" data-category="ecommerce" aria-pressed="false" aria-controls="category-ecommerce">AI E-commerce <span>10</span></button><button type="button" class="category-filter" data-category="dtc" aria-pressed="false" aria-controls="category-dtc">DTC Ads <span>10</span></button><button type="button" class="category-filter" data-category="vsl" aria-pressed="false" aria-controls="category-vsl">AI VSL <span>5</span></button><button type="button" class="category-filter" data-category="meta" aria-pressed="false" aria-controls="category-meta">AI Meta Ads <span>2</span></button><button type="button" class="category-filter" data-category="claymation" aria-pressed="false" aria-controls="category-claymation">AI Claymation <span>3</span></button><button type="button" class="category-filter" data-category="3d" aria-pressed="false" aria-controls="category-3d">AI 3D Animation Ads <span>3</span></button><button type="button" class="category-filter" data-category="podcast" aria-pressed="false" aria-controls="category-podcast">AI Podcast Ads <span>3</span></button><button type="button" class="category-filter" data-category="newscast" aria-pressed="false" aria-controls="category-newscast">AI Newscast Ads <span>3</span></button><button type="button" class="category-filter" data-category="all" aria-pressed="false">All AI Work <span>29</span></button></div>
+    <div class="category-filters" role="group" aria-label="Filter AI video portfolio"><button type="button" class="category-filter" data-category="ugc" aria-pressed="true" aria-controls="category-ugc">AI UGC Ads <span>10</span></button><button type="button" class="category-filter" data-category="ecommerce" aria-pressed="false" aria-controls="category-ecommerce">AI E-commerce <span>10</span></button><button type="button" class="category-filter" data-category="dtc" aria-pressed="false" aria-controls="category-dtc">AI DTC Ads <span>10</span></button><button type="button" class="category-filter" data-category="vsl" aria-pressed="false" aria-controls="category-vsl">AI VSL <span>5</span></button><button type="button" class="category-filter" data-category="meta" aria-pressed="false" aria-controls="category-meta">AI Meta Ads <span>2</span></button><button type="button" class="category-filter" data-category="claymation" aria-pressed="false" aria-controls="category-claymation">AI Claymation <span>3</span></button><button type="button" class="category-filter" data-category="3d" aria-pressed="false" aria-controls="category-3d">AI 3D Animation Ads <span>3</span></button><button type="button" class="category-filter" data-category="podcast" aria-pressed="false" aria-controls="category-podcast">AI Podcast Ads <span>3</span></button><button type="button" class="category-filter" data-category="newscast" aria-pressed="false" aria-controls="category-newscast">AI Newscast Ads <span>3</span></button><button type="button" class="category-filter" data-category="all" aria-pressed="false">All AI Work <span>29</span></button></div>
     <p class="portfolio-status" role="status" aria-live="polite"></p>
     <section class="portfolio-category" id="category-ugc" data-category="ugc" aria-labelledby="heading-ugc">
       <div class="category-heading"><div><span class="category-index">01 / 09</span><h3 id="heading-ugc">AI UGC Ads</h3><p>Creator-style concepts, expert-led presentations, and product storytelling.</p></div><span class="category-count">10 videos</span></div>
@@ -1308,7 +1308,7 @@
         <div class="category-heading">
           <div>
             <span class="category-index">03 / 09</span>
-            <h3 id="heading-dtc">DTC Ads</h3>
+            <h3 id="heading-dtc">AI DTC Ads</h3>
             <p>Direct-to-consumer product ads featuring problem-solution hooks, expert-led storytelling, demonstrations, and product-focused creative for paid social.</p>
           </div>
           <span class="category-count">10 videos</span>
@@ -1327,11 +1327,11 @@
         if (labelledBy) clone.setAttribute('aria-labelledby', `dtc-${labelledBy}`);
 
         const type = clone.querySelector('.film-type');
-        if (type) type.textContent = type.textContent.replace(/^AI [^·]+/, 'DTC Ads');
+        if (type) type.textContent = type.textContent.replace(/^AI [^·]+/, 'AI DTC Ads');
         const poster = clone.querySelector('.film-poster');
         if (poster) {
           const label = poster.getAttribute('aria-label') || '';
-          poster.setAttribute('aria-label', label.replace(/\([^)]*\)$/, '(DTC Ads)'));
+          poster.setAttribute('aria-label', label.replace(/\([^)]*\)$/, '(AI DTC Ads)'));
         }
         dtcGrid.appendChild(clone);
       });
