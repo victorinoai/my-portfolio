@@ -1296,8 +1296,21 @@
       if (ugcSection) ugcSection.insertAdjacentElement('afterend', ecommerceSection);
       sections.push(ecommerceSection);
 
-      // DTC ads reuse the existing product-ad videos and their Vimeo embeds.
-      // Each clone has unique IDs so category filtering and accessible labels remain valid.
+      // DTC ads have a separate, non-overlapping curated selection of direct-response
+      // concepts: Meta ad variations, VSLs, creator-led pitches, podcast and newscast ads.
+      // Reuse the original Vimeo embeds and keep all 29 unique films in All AI Work.
+      const dtcIds = [
+        'film-pet-dental-care-version-2',
+        'film-pet-dental-care-version-1',
+        'film-cervitrax',
+        'film-avouria',
+        'film-aparthy',
+        'film-pavra',
+        'film-ovia',
+        'film-loop-dream',
+        'film-hemo-flow-military-interview',
+        'film-heystrips-the-craving-cycle'
+      ];
       const dtcSection = document.createElement('section');
       dtcSection.className = 'portfolio-category';
       dtcSection.id = 'category-dtc';
@@ -1316,7 +1329,7 @@
         <div class="portfolio-grid"></div>`;
 
       const dtcGrid = dtcSection.querySelector('.portfolio-grid');
-      ecommerceIds.forEach(id => {
+      dtcIds.forEach(id => {
         const source = root.querySelector(`#${id}`);
         if (!source) return;
         const clone = source.cloneNode(true);
